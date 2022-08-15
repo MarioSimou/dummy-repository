@@ -1,0 +1,17 @@
+name: Test Issues Workflow
+
+on:
+  issues:
+    types:
+      - labeled
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Print event
+        env:
+          DATA: ${{ toJSON(github) }}
+        run: echo "$DATA"
