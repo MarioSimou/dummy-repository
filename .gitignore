@@ -1,0 +1,7 @@
+# github
+.github/events/
+
+# nektos/act
+.secrets
+
+node_modules/

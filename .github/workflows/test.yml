@@ -6,12 +6,15 @@ on:
       - labeled
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Print event
-        env:
-          DATA: ${{ toJSON(github) }}
-        run: echo "$DATA"
+  create-issue-tweet:
+    uses: ./.github/workflows/create-issue-tweet.yml
+  tweet-issue:
+    needs: [create-issue-tweet]
+    uses: gitevents/propaganda/.github/workflows/twitter-event.yml@main
+    with:
+      status: ${{ needs.create-issue-tweet.outputs.tweet }}
+    secrets:
+      consumer-key: ${{ secrets.TWITTER_CONSUMER_KEY }}
+      consumer-secret: ${{ secrets.TWITTER_CONSUMER_SECRET }}
+      access-token: ${{ secrets.TWITTER_ACCESS_TOKEN }}
+      access-token-secret: ${{ secrets.TWITTER_ACCESS_TOKEN_SECRET }}
